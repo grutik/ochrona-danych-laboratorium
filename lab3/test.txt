@@ -1,0 +1,5 @@
+Atak brutalnej siły na kryptogram polega na systematycznym przetestowaniu całej przestrzeni możliwych kluczy. Przeprowadzenie ataku wymaga określenia jednoznacznego kryterium zakończenia. Algorytm musi umieć stwierdzić, czy kryptogram został odszyfrowany prawidłowo. Ogólną metodą odróżniania poprawnego odszyfrowania od przypadkowych wyników jest entropia. Tekst naturalny ma entropię znacząco niższą niż przypadkowy wynik odszyfrowania. Znając jednak charakter tekstu jawnego, można zaproponować znacznie prostsze rozwiązania.
+
+Wprowadzenie do RC4. Algorytm RC4 jest algorytmem szyfrowania strumieniowego. Jego zadaniem jest wygenerowanie strumienia klucza, który następnie jest łączony z tekstem jawnym za pomocą operacji XOR. Poniżej przedstawiony jest pseudokod RC4:
+
+Celem zajęć jest zapoznanie z algorytmami szyfrowania systetrycznego. Zarówno z algorytmami blokowymi jaki i strumieniowymi. Wprowadzanie do tematyki trybów pracy szyfrów blokowych, a także ataków brutalnej siły.
