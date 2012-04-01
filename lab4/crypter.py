@@ -5,23 +5,52 @@ import math
 from Crypto.Cipher import DES,AES
 import time
 import hashlib
-
 ########## Otworzenie pliku ############
 plain = open(sys.argv[1])
 haslo = sys.argv[2]
 random.seed(time.time())
 
+import sys, re, string
+import math
+
+def histogram(data):
+	total = 0.0;
+	stat = {}
+	for line in data:
+		line = re.sub(r'\s', '', line)
+		for znak in line:
+			if znak in stat:
+				stat[znak] += 1
+			else:
+				stat[znak] = 0
+			total = total + 1
+
+	prawdopodob = {}
+	for znak in stat:
+		prawdopodob[znak] = stat[znak]/total
+
+	return prawdopodob
+
+def entropy(data):
+	prawdopodob = histogram(data)
+	entropy = 0
+	for znak in prawdopodob:
+		if(prawdopodob[znak] > 0):
+			entropy = entropy + prawdopodob[znak] * math.log(prawdopodob[znak],2.0)
+
+	return entropy*(-1)
+
 ## Losowa sol:
 sol = ""
 for s in range(8):
 	sol += str(random.randint(0,9))
-print "sol:"
-print sol
+#print "sol:"
+#print sol
 password = hashlib.sha224(haslo).hexdigest()
 for i in range(1000):
 	password = hashlib.sha224(password+str(sol)).hexdigest()
-print "pass:"
-print password
+#print "pass:"
+#print password
 
 ## Okrojenie klucza:
 key = ""
@@ -32,8 +61,8 @@ for i in password:
 		break
 	k = k +1
 
-print "key:"
-print key
+#print "key:"
+#print key
 
 ## Wczytanie pliku do zmiennej:
 inputFile = ""
@@ -41,11 +70,62 @@ for line in plain.readlines():
    for char in line:
       inputFile += char
 
+while(len(inputFile)%16 <> 0):
+	inputFile += " "
+#print "Reszta:"
+#print len(inputFile)%16
 
+#print inputFile
 ##############################################
-aes = AES.new(key,AES.MODE_CBC)
-cryptogram  = aes.encrypt(inputFile)
+small = "abcdefghijklmnoprstuwxyz"
+capt = "ABCDEFGHIJKLMNOPRSTUWXYZ"
+n = 0
+check = 0
+for s in small:
+	if check != 0:
+		break
+	else:
+		for h in haslo:
+			if h == s:
+				n = n + 24
+				check = 1
+				break
+check = 0
+for s in capt:
+	if check != 0:
+		break
+	else:
+		for h in haslo:
+			if h == s:
+				n = n + 24
+				check = 1
+				break
 
-file = open(sys.argv[3], 'w')
-file.write(sol)
-file.write(cryptogram)	
+check = 0
+for s in "0123456789":
+	if check != 0:
+		break
+	else:
+		for h in haslo:
+			if h == s:
+				n = n + 10
+				check = 1
+				break
+
+
+#print "N:"
+#print n
+
+entropia = len(haslo) * math.log(n,2)
+#print entropia
+if(entropia < 80):
+	print "slabe haslo, za mala entropia:"
+	print entropia
+else:
+	aes = AES.new(key,AES.MODE_CBC)
+	cryptogram  = aes.encrypt(inputFile)
+	file = open(sys.argv[3], 'w')
+	file.write(sol)
+	file.write(cryptogram)	
+
+
