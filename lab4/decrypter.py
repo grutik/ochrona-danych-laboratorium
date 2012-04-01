@@ -22,8 +22,8 @@ for s in inputFile:
 	ss = ss + 1
 	if ss == 8:
 		break
-print "Sol:"
-print sol
+#print "Sol:"
+#print sol
 
 password = hashlib.sha224(haslo).hexdigest()
 for i in range(1000):
@@ -36,12 +36,12 @@ for i in password:
 	if k == 15:
 		break
 	k = k +1
-print "Key:"
-print key
-print ""
+#print "Key:"
+#print key
+#print ""
 
-print "inputFile:"
-print inputFile
+#print "inputFile:"
+#print inputFile
 new = ""
 i = 0
 for f in inputFile:
@@ -53,14 +53,14 @@ for f in inputFile:
 	i = i +1
 
 reszta = len(new)%16
-print "Reszta:"
-print reszta
+#print "Reszta:"
+#print reszta
 for i in range(reszta):
 	new += " "
 
 
-print "new:"
-print new
+#print "new:"
+#print new
 ##############################################
 aes = AES.new(key,AES.MODE_CBC)
 cryptogram  = aes.decrypt(new)
