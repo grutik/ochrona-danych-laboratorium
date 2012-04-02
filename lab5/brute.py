@@ -85,11 +85,18 @@ for i in range(reszta):
 #print "new:"
 #print new
 
+found = 0
 #generowanie hasla
 chars = string.ascii_letters
 for a in chars:
+	if found == 1:
+		break
 	for b in chars:
+		if found == 1:
+			break
 		for c in chars:
+			if found == 1:
+				break
 			haslo = a+b+c
 
 			password = hashlib.sha224(haslo).hexdigest()
@@ -110,23 +117,14 @@ for a in chars:
 #############################################
 			aes = AES.new(key,AES.MODE_CBC)
 			cryptogram  = aes.decrypt(new)
-			naglowek = ""
-			licznik = 0
-			for i in cryptogram:
-				licznik = licznik + 1
-				if licznik == 30:
-					break
-				naglowek += i
 
 			header = cryptogram[0:30]
-			print header
+#			print header
 			#entropia = str(entropy(naglowek))
-
 			
-			time.sleep(0.5)
-			#if str(entropia) == str(1.23889710145):
-			if header == pdfFormat:
-				file = open("decrypted.pdf", 'wb')
+			if header == pdfFormat or header == jpgFormat:
+				found = 1
+				file = open(sys.argv[2], 'wb')
 				for item in cryptogram:
 					file.write(''.join(item))	
 				break
