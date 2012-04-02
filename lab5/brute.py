@@ -11,6 +11,8 @@ import sys, re, string
 import math
 
 limit = 0
+pdfFormat = open('pdf.format','rb').read()
+jpgFormat = open('jpg.format','rb').read()
 
 def histogram(data):
 	total = 0.0;
@@ -116,19 +118,15 @@ for a in chars:
 					break
 				naglowek += i
 
-			header = cryptogram[1:30]
+			header = cryptogram[0:30]
 			print header
-			entropia = str(entropy(naglowek))
+			#entropia = str(entropy(naglowek))
 
+			
 			time.sleep(0.5)
-			print entropia
-			print "Wynik logiczny"
-			print (entropia == str(1.23889710145))
 			#if str(entropia) == str(1.23889710145):
-			if 1:
-				print "Entropii: "
-				print entropia
-				file = open("decrypted.jpg", 'wb')
+			if header == pdfFormat:
+				file = open("decrypted.pdf", 'wb')
 				for item in cryptogram:
 					file.write(''.join(item))	
 				break
